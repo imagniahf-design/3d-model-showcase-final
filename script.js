@@ -112,6 +112,10 @@ class ModelShowcase {
 
             savePublishing?.addEventListener('click', () => {
                 this.publishing = {
+                    storageType: this.publishing.storageType || 'github',
+                    githubToken: githubToken.value.trim(),
+                    githubUsername: githubUsername.value.trim(),
+                    githubRepo: githubRepo.value.trim(),
                     accessKey: cfAccessKey.value.trim(),
                     secretKey: cfSecretKey.value.trim(),
                     accountId: cfAccountId.value.trim(),
@@ -412,14 +416,26 @@ class ModelShowcase {
             };
             
             // Auto-publish if configured
-            if (this.publishing.publishOnUpload) {
+            if (this.publishing.publishOnUpload && this.publishing.storageType === 'github') {
                 try {
+                    console.log('Auto-publishing model to GitHub...', {
+                        storageType: this.publishing.storageType,
+                        hasToken: !!this.publishing.githubToken,
+                        hasUsername: !!this.publishing.githubUsername,
+                        hasRepo: !!this.publishing.githubRepo
+                    });
                     await this.publishModelIfConfigured(modelForPublishing);
-                    console.log('Model auto-published successfully');
+                    console.log('Model auto-published successfully to GitHub');
+                    alert('✅ Model uploaded and published to GitHub successfully!');
                 } catch (error) {
                     console.error('Auto-publish failed:', error);
-                    alert(`Auto-publish failed: ${error.message}. You can publish manually later.`);
+                    alert(`❌ Auto-publish failed: ${error.message}. You can publish manually later.`);
                 }
+            } else {
+                console.log('Auto-publish skipped:', {
+                    publishOnUpload: this.publishing.publishOnUpload,
+                    storageType: this.publishing.storageType
+                });
             }
 
             // Model uploaded successfully - ready for manual publishing
