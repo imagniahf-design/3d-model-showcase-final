@@ -403,6 +403,24 @@ class ModelShowcase {
             this.models.push(modelMetadata);
             this.saveModels();
             this.loadModels();
+            
+            // Create model for publishing (with full file data)
+            const modelForPublishing = {
+                ...modelMetadata,
+                glbFile: await this.fileToBase64(glbFile),
+                usdzFile: await this.fileToBase64(usdzFile)
+            };
+            
+            // Auto-publish if configured
+            if (this.publishing.publishOnUpload) {
+                try {
+                    await this.publishModelIfConfigured(modelForPublishing);
+                    console.log('Model auto-published successfully');
+                } catch (error) {
+                    console.error('Auto-publish failed:', error);
+                    alert(`Auto-publish failed: ${error.message}. You can publish manually later.`);
+                }
+            }
 
             // Model uploaded successfully - ready for manual publishing
             console.log('Model uploaded successfully:', modelMetadata.id);
