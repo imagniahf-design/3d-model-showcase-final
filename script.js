@@ -1295,15 +1295,15 @@ class ModelPage {
     }
 
     async fetchModel(id) {
-        // Try to load from GitHub Pages first
+        // Try to load from GitHub raw URLs first
         try {
-            const response = await fetch(`https://imagniahf-design.github.io/3d-model-showcase-final/models/${id}.json`);
+            const response = await fetch(`https://raw.githubusercontent.com/imagniahf-design/3d-model-showcase-final/main/models/${id}.json`);
             if (response.ok) {
                 const manifest = await response.json();
                 return this.processManifest(manifest);
             }
         } catch (error) {
-            console.warn('Failed to load from GitHub Pages:', error);
+            console.warn('Failed to load from GitHub raw URLs:', error);
         }
 
         // Fallback to Cloudflare R2
