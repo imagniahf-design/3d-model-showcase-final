@@ -436,6 +436,8 @@ class ModelShowcase {
                     publishOnUpload: this.publishing.publishOnUpload,
                     storageType: this.publishing.storageType
                 });
+                // Show manual publish option
+                alert('📤 Model uploaded locally. Click "Publish" button to upload to GitHub.');
             }
 
             // Model uploaded successfully - ready for manual publishing
@@ -1221,7 +1223,7 @@ class ModelShowcase {
         }
         
         // Show file picker to re-select the files for publishing
-        alert('Please select your GLB and USDZ files again for publishing to Cloudflare R2.');
+        alert('Please select your GLB and USDZ files again for publishing to GitHub.');
         
         const input = document.createElement('input');
         input.type = 'file';
